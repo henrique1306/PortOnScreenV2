@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  api-arduino:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-arduino
+    ports:
+      - "3000:3000"
+    env_file:
+      - path: .env
+        required: false
+    restart: unless-stopped
