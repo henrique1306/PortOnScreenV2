@@ -1,0 +1,7 @@
+.git
+.idea
+.venv
+__pycache__
+*.py[cod]
+fotos_acessos
+teste_ocr.webp

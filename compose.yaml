@@ -1,0 +1,37 @@
+services:
+  portaria:
+    build: .
+    image: portaria-onscreen:latest
+    environment:
+      API_URL: ${API_URL:-https://api-arduino-khdv.onrender.com}
+      DATA_BACKEND: ${DATA_BACKEND:-firebase}
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID:-demo-portonscreen}
+      FIRESTORE_EMULATOR_HOST: firebase:8080
+      FIREBASE_AUTH_EMULATOR_HOST: firebase:9099
+      PORTA_SERIAL: /dev/ttyUSB0
+      BAUD_RATE: ${BAUD_RATE:-9600}
+      CAMERA_INDEX: "0"
+    depends_on:
+      - firebase
+    devices:
+      - "${SERIAL_DEVICE:-/dev/ttyUSB0}:/dev/ttyUSB0"
+      - "${CAMERA_DEVICE:-/dev/video0}:/dev/video0"
+    volumes:
+      - ./fotos_acessos:/app/fotos_acessos
+      - easyocr-models:/root/.EasyOCR
+
+  firebase:
+    build: ./firebase
+    image: portonscreen-firebase-emulator:latest
+    environment:
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID:-demo-portonscreen}
+    ports:
+      - "127.0.0.1:${FIRESTORE_PORT:-8080}:8080"
+      - "127.0.0.1:${FIREBASE_AUTH_PORT:-9099}:9099"
+      - "127.0.0.1:${FIREBASE_UI_PORT:-4000}:4000"
+    volumes:
+      - firebase-data:/opt/firebase/data
+
+volumes:
+  easyocr-models:
+  firebase-data:

@@ -1,0 +1,5 @@
+easyocr
+opencv-python-headless
+pyserial
+requests
+google-cloud-firestore
